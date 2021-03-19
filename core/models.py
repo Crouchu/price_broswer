@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
+from simple_history.models import HistoricalRecords
 
 
 class UserMananger(BaseUserManager):
@@ -34,3 +35,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserMananger()
 
     USERNAME_FIELD = 'email'
+
+
+class Product(models.Model):
+    """Product model"""
+
+    CATEGORY_CHOICES = (
+        ('GPU', 'Graphics Card'),
+        ('CPU', 'Processor')
+    )
+    product_id = models.AutoField(primary_key=True)
+    product_name = models.CharField(max_length=255)
+    image = models.ImageField(blank=True, null=True)
+    link_morele = models.URLField(max_length=255, blank=True)
+    slug = models.SlugField()
+    price_morele = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    link_xkom = models.URLField(max_length=255, blank=True)
+    price_xkom = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    price_history = HistoricalRecords(excluded_fields=['product_name', 'image', 'link', 'category', 'created_at', 'slug'], cascade_delete_history=True)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.product_name
