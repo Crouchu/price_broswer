@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 from simple_history.models import HistoricalRecords
+from django.conf import settings
 
 
 class UserMananger(BaseUserManager):
@@ -59,3 +60,19 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+
+class Watchlist(models.Model):
+    """Watchlist model"""
+    watchlist_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255, default='watchlist')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    products = models.ManyToManyField('Product')
+
+    class Meta:
+        ordering = ['watchlist_id', 'user']
+
+    def __str__(self):
+        return f'{self.user} {self.title}'
+

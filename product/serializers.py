@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Product
+from core.models import Product, Watchlist
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -13,3 +13,14 @@ class ProductSerializer(serializers.ModelSerializer):
             'link_xkom', 'price_xkom', 'category', 'created_at', 'updated_at'
         )
         read_only_fields = ('product_id',)
+
+
+class WatchlistSerializer(serializers.ModelSerializer):
+    """Serialize a watchlist"""
+
+    products = serializers.PrimaryKeyRelatedField(many=True, queryset=Product.objects.all())
+
+    class Meta:
+        model = Watchlist
+        fields = ('watchlist_id', 'title', 'products')
+        read_only_fields = ('watchlist_id',)

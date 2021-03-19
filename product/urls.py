@@ -7,7 +7,7 @@ from product import views
 router = DefaultRouter()
 
 router.register('products', views.ProductViewSet)
-# router.register('watchlist', views.WatchlistViewSet)
+router.register('watchlist', views.WatchlistViewSet)
 
 
 app_name = 'product'
