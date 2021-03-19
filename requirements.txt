@@ -1,0 +1,5 @@
+django 3.16
+beautifulsoup4
+celery
+django-simple-history
+djangorestframework
